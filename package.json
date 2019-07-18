@@ -1,0 +1,28 @@
+{
+  "name": "@appgrade/translation-xtractor",
+  "author": "Appgrade",
+  "version": "0.0.1",
+  "description": "Converts a key-value translation JSON to CSV and vice versa",
+  "repository": "github:appgrade-bvba/translation-xtractor",
+  "bugs": "https://github.com/appgrade-bvba/translation-xtractor/issues",
+  "main": "index.js",
+  "scripts": {},
+  "bin": {
+    "translation-xtractor": "bin/translation-xtractor.js"
+  },
+  "keywords": [
+    "translation",
+    "translate",
+    "angular",
+    "ngx",
+    "json",
+    "csv",
+    "excel",
+    "import",
+    "export"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "yargs": "^13.2.4"
+  }
+}
