@@ -8,6 +8,7 @@ function doImport(argv) {
   const translationMap = {}
   let languages = []
 
+  const regex = /("[^"]+")|([^,]+)/g
   lines.forEach((line, index) => {
     if (!line.includes(DELIMITER_CHAR)) {
       return
@@ -19,11 +20,11 @@ function doImport(argv) {
       return
     }
 
-    const splitted = line.split(DELIMITER_CHAR)
-    const component = `${splitted[0]}.${splitted[1]}`
+    const groups = line.match(regex)
+    const component = `${groups[0]}.${groups[1]}`
 
-    splitted.slice(2).forEach((translation, splitIndex) => {
-      translationMap[languages[splitIndex]][component] = translation
+    groups.slice(2).forEach((translation, splitIndex) => {
+      translationMap[languages[splitIndex]][component] = translation.replace(/"/g, '')
     })
   })
 

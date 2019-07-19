@@ -31,14 +31,22 @@ function doExport(argv) {
     const component = key.substring(0, pos)
     const fieldName = key.substring(pos + 1)
 
-    const translation = languages.reduce((acc, curr) => {
+    const translations = languages.reduce((acc, curr) => {
       acc[curr] = translationMap[curr][key]
       return acc
     }, {})
 
     csv += `${component}${DELIMITER_CHAR}${fieldName}`
 
-    languages.forEach(lang => csv += `${DELIMITER_CHAR}${translation[lang]}`)
+    languages.forEach(lang => {
+      let translation = translations[lang]
+      if (translation.includes(DELIMITER_CHAR)) {
+        translation = `"${translation}"`
+      }
+
+      csv += `${DELIMITER_CHAR}${translation}`
+    })
+
     csv += NEW_LINE
   })
 

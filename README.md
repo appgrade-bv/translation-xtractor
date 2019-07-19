@@ -89,3 +89,10 @@ Some valid examples are:
 
 ## Found a bug? Got a suggestion?
 Shoot! You can reach us at [info@appgrade.be](mailto:info@appgrade.be) or create an issue or pull request on our [GitHub](https://github.com/appgrade-bvba/translation-xtractor).
+
+## Release notes
+### 1.0.0
+Added support to handle cases where the delimiter char is present in the output. As this is a breaking change compared to the release before, it's a major version bump.
+
+### 0.0.1
+Initial release

@@ -1,5 +1,5 @@
 const NEW_LINE = '\n'
-const DELIMITER_CHAR = ';'
+const DELIMITER_CHAR = ','
 
 module.exports = {
   NEW_LINE,
