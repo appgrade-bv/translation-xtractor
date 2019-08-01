@@ -87,12 +87,23 @@ Some valid examples are:
 
 `translation-xtractor import -i some-folder/output.csv -o assets/i18n`
 
+
+### Other options
+#### `-delimiter`
+_alias: `-d`_
+
+You can specify the delimiter for both the `import` and `export` command. This defaults to `,` (comma).
+
 ## Found a bug? Got a suggestion?
 Shoot! You can reach us at [info@appgrade.be](mailto:info@appgrade.be) or create an issue or pull request on our [GitHub](https://github.com/appgrade-bvba/translation-xtractor).
 
 ## Release notes
+### 1.1.0
+- Added the option to specify a delimiter used for both `export` and `import` commands.
+- Added rudimentary error handling.
+
 ### 1.0.0
-Added support to handle cases where the delimiter char is present in the output. As this is a breaking change compared to the release before, it's a major version bump.
+- Added support to handle cases where the delimiter char is present in the output. As this is a breaking change compared to the release before, it's a major version bump.
 
 ### 0.0.1
-Initial release
+- Initial release

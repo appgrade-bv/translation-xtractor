@@ -1,7 +1,7 @@
-const fs = require('fs')
 const path = require('path')
 
-const { DELIMITER_CHAR, NEW_LINE } = require('./constants')
+const { NEW_LINE } = require('./constants')
+const { readFile, writeFile, parseJSON } = require('./utils')
 
 function getFileNameWithoutExtension(filename) {
   return path.parse(filename).name
@@ -13,16 +13,17 @@ function doExport(argv) {
 
   const translationMap = input.reduce((map, filePath) => {
     const lang = getFileNameWithoutExtension(filePath)
-    const content = fs.readFileSync(filePath, 'utf8')
-    map[lang] = JSON.parse(content)
+    const content = readFile(filePath)
+
+    map[lang] = parseJSON(content)
 
     languages.push(lang)
     return map
   }, {})
 
   // Create header
-  let csv = `Component${DELIMITER_CHAR}Field name`
-  languages.forEach(lang => csv += `${DELIMITER_CHAR}${lang}`)
+  let csv = `Component${argv.delimiter}Field name`
+  languages.forEach(lang => csv += `${argv.delimiter}${lang}`)
   csv += NEW_LINE
 
   // Write rows of translations for every language
@@ -36,21 +37,21 @@ function doExport(argv) {
       return acc
     }, {})
 
-    csv += `${component}${DELIMITER_CHAR}${fieldName}`
+    csv += `${component}${argv.delimiter}${fieldName}`
 
     languages.forEach(lang => {
       let translation = translations[lang]
-      if (translation.includes(DELIMITER_CHAR)) {
+      if (translation.includes(argv.delimiter)) {
         translation = `"${translation}"`
       }
 
-      csv += `${DELIMITER_CHAR}${translation}`
+      csv += `${argv.delimiter}${translation}`
     })
 
     csv += NEW_LINE
   })
 
-  fs.writeFileSync(argv.output, csv, 'utf8')
+  writeFile(argv.output, csv)
 }
 
 module.exports = doExport

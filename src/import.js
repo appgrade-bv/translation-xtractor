@@ -1,21 +1,20 @@
-const fs = require('fs')
-const { DELIMITER_CHAR } = require('./constants')
+const { readFile, writeFile } = require('./utils')
 
 function doImport(argv) {
-  const csv = fs.readFileSync(argv.input, 'utf8')
+  const csv = readFile(argv.input)
   const lines = csv.split(/[\n\r]/g)
 
   const translationMap = {}
   let languages = []
 
-  const regex = /("[^"]+")|([^,]+)/g
+  const regex = new RegExp(`("[^"]+")|([^${argv.delimiter}]+)`, 'gi')
   lines.forEach((line, index) => {
-    if (!line.includes(DELIMITER_CHAR)) {
+    if (!line.includes(argv.delimiter)) {
       return
     }
 
     if (index === 0) {
-      languages = line.split(DELIMITER_CHAR).slice(2)
+      languages = line.split(argv.delimiter).slice(2)
       languages.forEach(lang => translationMap[lang] = {})
       return
     }
@@ -29,8 +28,9 @@ function doImport(argv) {
   })
 
   languages.forEach(lang => {
-    fs.writeFileSync(`${argv.output}/${lang}.json`, JSON.stringify(translationMap[lang], null, 2), 'utf8')
+    writeFile(`${argv.output}/${lang}.json`, JSON.stringify(translationMap[lang], null, 2))
   })
+
 }
 
 module.exports = doImport
