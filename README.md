@@ -98,6 +98,10 @@ You can specify the delimiter for both the `import` and `export` command. This d
 Shoot! You can reach us at [info@appgrade.be](mailto:info@appgrade.be) or create an issue or pull request on our [GitHub](https://github.com/appgrade-bvba/translation-xtractor).
 
 ## Release notes
+
+### 1.1.1
+- Added warnings and prevent crashes when translations keys are missing in some input files.
+
 ### 1.1.0
 - Added the option to specify a delimiter used for both `export` and `import` commands.
 - Added rudimentary error handling.
