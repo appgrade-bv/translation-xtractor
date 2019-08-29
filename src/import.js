@@ -20,10 +20,14 @@ function doImport(argv) {
     }
 
     const groups = line.match(regex)
-    const component = `${groups[0]}.${groups[1]}`
+    const key = `${groups[0]}.${groups[1]}`
+
+    if (groups.length !== languages.length + 2) {
+      throw new Error(`Found a missing translation for key "${key}".`)
+    }
 
     groups.slice(2).forEach((translation, splitIndex) => {
-      translationMap[languages[splitIndex]][component] = translation.replace(/"/g, '')
+      translationMap[languages[splitIndex]][key] = translation.replace(/"/g, '')
     })
   })
 
@@ -31,6 +35,7 @@ function doImport(argv) {
     writeFile(`${argv.output}/${lang}.json`, JSON.stringify(translationMap[lang], null, 2))
   })
 
+  console.info(`Translations have been imported to ${argv.output}.`)
 }
 
 module.exports = doImport

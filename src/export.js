@@ -10,24 +10,27 @@ function getFileNameWithoutExtension(filename) {
 function doExport(argv) {
   const input = Array.isArray(argv.input) ? argv.input : [argv.input]
   let languages = []
+  
+  const translationKeys = new Set()
 
   const translationMap = input.reduce((map, filePath) => {
     const lang = getFileNameWithoutExtension(filePath)
     const content = readFile(filePath)
 
     map[lang] = parseJSON(content)
-
     languages.push(lang)
+
+    Object.keys(map[lang]).forEach(key => {
+      translationKeys.add(key)
+    })
+
     return map
   }, {})
 
-  // Create header
-  let csv = `Component${argv.delimiter}Field name`
-  languages.forEach(lang => csv += `${argv.delimiter}${lang}`)
-  csv += NEW_LINE
+  const csvLines = []
 
-  // Write rows of translations for every language
-  Object.keys(translationMap[languages[0]]).forEach(key => {
+  // Write rows of translations for every key and every language
+  translationKeys.forEach(key => {
     const pos = key.lastIndexOf('.')
     const component = key.substring(0, pos)
     const fieldName = key.substring(pos + 1)
@@ -37,10 +40,15 @@ function doExport(argv) {
       return acc
     }, {})
 
-    csv += `${component}${argv.delimiter}${fieldName}`
+    let csv = `${component}${argv.delimiter}${fieldName}`
 
     languages.forEach(lang => {
       let translation = translations[lang]
+      if (!translation) {
+        console.warn(`The key "${key}" is missing in the "${lang}" language file.`)
+        translation = ''
+      }
+
       if (translation.includes(argv.delimiter)) {
         translation = `"${translation}"`
       }
@@ -48,10 +56,19 @@ function doExport(argv) {
       csv += `${argv.delimiter}${translation}`
     })
 
-    csv += NEW_LINE
+    csvLines.push(csv)
   })
 
-  writeFile(argv.output, csv)
+  csvLines.sort()
+
+  // Prepend header
+  let csvHeader = `Component${argv.delimiter}Field name`
+  languages.forEach(lang => csvHeader += `${argv.delimiter}${lang}`)
+  csvLines.unshift(csvHeader)
+
+  writeFile(argv.output, csvLines.join(NEW_LINE))
+
+  console.info(`Translations have been exported to ${argv.output}.`)
 }
 
 module.exports = doExport

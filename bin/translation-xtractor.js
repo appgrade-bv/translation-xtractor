@@ -59,6 +59,6 @@ try {
       (argv) => doImport(argv))
     .argv
 } catch (error) {
-  console.error('Oops! Something did not go as planned.')
-  console.error(error.message || error)
+  console.error('Oops! Something did not go as planned:')
+  console.error(`* ${error.message || error}`)
 }
