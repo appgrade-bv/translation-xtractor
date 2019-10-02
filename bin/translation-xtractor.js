@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs')
+const yargs = require('yargs');
 
-const { DELIMITER_CHAR } = require('../src/constants')
+const { DELIMITER_CHAR } = require('../src/constants');
 
-const doExport = require('../src/export')
-const doImport = require('../src/import')
+const doExport = require('../src/export');
+const doImport = require('../src/import');
+const doUpdate = require('../src/import');
 
 try {
   yargs
@@ -30,7 +31,7 @@ try {
             describe: 'The delimiter to use to separate values',
             demandOption: false,
             default: DELIMITER_CHAR,
-          })
+          });
       },
       (argv) => doExport(argv))
     .command(
@@ -54,11 +55,35 @@ try {
             describe: 'The delimiter used to separate values',
             demandOption: false,
             default: DELIMITER_CHAR,
-          })
+          });
       },
       (argv) => doImport(argv))
+      .command(
+        'update',
+        'Import the specified CSV translation file to one or more JSON files.',
+        (yargs) => {
+          return yargs
+            .option('input', {
+              alias: 'i',
+              describe: 'The path to the input translation file.',
+              demandOption: true,
+            })
+            .option('output', {
+              alias: 'o',
+              describe: 'The path where the JSON file(s) will be written to.',
+              demandOption: false,
+              default: './',
+            })
+            .option('delimiter', {
+              alias: 'd',
+              describe: 'The delimiter used to separate values',
+              demandOption: false,
+              default: DELIMITER_CHAR,
+            });
+        },
+        (argv) => doUpdate(argv))
     .argv
 } catch (error) {
-  console.error('Oops! Something did not go as planned:')
-  console.error(`* ${error.message || error}`)
+  console.error('Oops! Something did not go as planned:');
+  console.error(`* ${error.message || error}`);
 }
