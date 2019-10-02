@@ -6,7 +6,7 @@ const { DELIMITER_CHAR } = require('../src/constants');
 
 const doExport = require('../src/export');
 const doImport = require('../src/import');
-const doUpdate = require('../src/import');
+const doUpdate = require('../src/update');
 
 try {
   yargs
