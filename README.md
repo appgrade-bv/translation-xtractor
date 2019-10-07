@@ -99,6 +99,9 @@ Shoot! You can reach us at [info@appgrade.be](mailto:info@appgrade.be) or create
 
 ## Release notes
 
+### 1.2.0
+- Added merge functionality to retain new keys when importing.
+
 ### 1.1.1
 - Added warnings and prevent crashes when translations keys are missing in some input files.
 
