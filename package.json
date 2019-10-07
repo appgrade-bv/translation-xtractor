@@ -1,7 +1,7 @@
 {
   "name": "@appgrade/translation-xtractor",
   "author": "Appgrade",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Converts a key-value translation JSON to CSV and vice versa",
   "repository": "github:appgrade-bvba/translation-xtractor",
   "bugs": "https://github.com/appgrade-bvba/translation-xtractor/issues",
