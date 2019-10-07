@@ -89,12 +89,12 @@ Some valid examples are:
 
 
 ### Other options
-#### `-delimiter`
+#### `--delimiter`
 _alias: `-d`_
 
 You can specify the delimiter for both the `import` and `export` command. This defaults to `,` (comma).
 
-#### `-merge`
+#### `--merge`
 _alias: `-m`_
 
 You can choose to keep new keys in the output file(s) so that they are not overridden when importing. This defaults to false.
