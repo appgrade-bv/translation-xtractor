@@ -1,13 +1,14 @@
-const { readFile, writeFile } = require('./utils')
+const { readFile, writeFile, parseJSON } = require('./utils')
 
 function doImport(argv) {
   const csv = readFile(argv.input)
   const lines = csv.split(/[\n\r]/g)
+  const regex = new RegExp(`("[^"]+")|([^${argv.delimiter}]+)`, 'gi')
 
   const translationMap = {}
+  const existingTranslationMap = {}
   let languages = []
 
-  const regex = new RegExp(`("[^"]+")|([^${argv.delimiter}]+)`, 'gi')
   lines.forEach((line, index) => {
     if (!line.includes(argv.delimiter)) {
       return
@@ -32,7 +33,25 @@ function doImport(argv) {
   })
 
   languages.forEach(lang => {
-    writeFile(`${argv.output}/${lang}.json`, JSON.stringify(translationMap[lang], null, 2))
+    if (argv.merge) {
+      try {
+        const content = readFile(`${argv.output}/${lang}.json`)
+        existingTranslationMap[lang] = parseJSON(content)
+
+        Object.keys(existingTranslationMap[lang]).forEach(existingTranslationKey => {
+          if (!translationMap[lang].hasOwnProperty(existingTranslationKey)) {
+            translationMap[lang][existingTranslationKey] = existingTranslationMap[lang][existingTranslationKey]
+          }
+        })
+      }
+      catch (e) {
+        console.error(`Could not merge with file ${argv.output}/${lang}.json:`)
+        console.error(e)
+      }
+    }
+
+    writeFile(`${argv.output}/${lang}.json`, JSON.stringify(translationMap[lang], null, 2)
+    )
   })
 
   console.info(`Translations have been imported to ${argv.output}.`)

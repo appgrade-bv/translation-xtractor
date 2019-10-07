@@ -55,6 +55,13 @@ try {
             demandOption: false,
             default: DELIMITER_CHAR,
           })
+          .option('merge', {
+            alias: 'm',
+            type: 'boolean',
+            describe: 'Whether to keep new keys in the output file(s).',
+            demandOption: false,
+            default: false,
+          })
       },
       (argv) => doImport(argv))
     .argv
