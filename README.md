@@ -104,6 +104,9 @@ Shoot! You can reach us at [info@appgrade.be](mailto:info@appgrade.be) or create
 
 ## Release notes
 
+### 1.2.1
+- Changed references to GitHub repository name.
+
 ### 1.2.0
 - Added merge functionality to retain new keys when importing.
 
